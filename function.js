@@ -74,9 +74,9 @@ function drawStart() {
     }
 
     // Collision with walls
-    if (heli.x > wall1.x && heli.x < wall1.x + wall1.w && heli.x + heli.w > wall1.x && heli.x + heli.w < wall1.x + wall1.w &&) {
-      gameOver();
-    }
+    // if (heli.x > wall1.x && heli.x < wall1.x + wall1.w && heli.x + heli.w > wall1.x && heli.x + heli.w < wall1.x + wall1.w &&) {
+    //   gameOver();
+    // }
   }
 
   function gameOver() {
