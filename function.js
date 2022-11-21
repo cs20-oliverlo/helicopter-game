@@ -1,3 +1,6 @@
+// Variables
+let best = 0;
+
 // Draw Start Screen
 function drawStart() {
     drawMainComponents()
@@ -17,6 +20,7 @@ function drawStart() {
     moveHeli();
     moveWalls();
     checkCollisions();
+    addDistance();
 
     // DRAW
     drawGame();
@@ -44,24 +48,33 @@ function drawStart() {
 
   function moveWalls() {
     // Wall 1
-    wall1.x += -3;
+    wall1.x += (-3 + wall1.speed);
     if (wall1.x + wall1.w < 0) {
       wall1.x = wall3.x + 500;
       wall1.y = Math.random() * 300 + 100;
+      if (wall1.speed > -5) {
+        wall1.speed += wall1.accel;
+      }
     }
 
     // Wall 2
-    wall2.x += -3;
+    wall2.x += (-3 + wall2.speed);
     if (wall2.x + wall2.w < 0) {
       wall2.x = wall1.x + 500;
       wall2.y = Math.random() * 300 + 100;
+      if (wall2.speed > -5) {
+        wall2.speed += wall2.accel;
+      }
     }
 
     // Wall 3
-    wall3.x += -3;
+    wall3.x += (-3 + wall3.speed);
     if (wall3.x + wall3.w < 0) {
       wall3.x = wall2.x + 500;
       wall3.y = Math.random() * 300 + 100;
+      if (wall3.speed > -5) {
+        wall3.speed += wall3.accel;
+      }
     }
   }
 
@@ -74,9 +87,17 @@ function drawStart() {
     }
 
     // Collision with walls
-    // if (heli.x > wall1.x && heli.x < wall1.x + wall1.w && heli.x + heli.w > wall1.x && heli.x + heli.w < wall1.x + wall1.w &&) {
-    //   gameOver();
-    // }
+    if (heli.x < wall1.x + wall1.w && heli.x + heli.w > wall1.x && heli.y < wall1.y + wall1.h && heli.y + heli.h > wall1.y) {
+      gameOver();
+    } else if (heli.x < wall2.x + wall2.w && heli.x + heli.w > wall2.x && heli.y < wall2.y + wall2.h && heli.y + heli.h > wall2.y) {
+      gameOver();
+    } else if (heli.x < wall3.x + wall3.w && heli.x + heli.w > wall3.x && heli.y < wall3.y + wall3.h && heli.y + heli.h > wall3.y) {
+      gameOver();
+    }
+  }
+  
+  function addDistance() {
+    distance++;
   }
 
   function gameOver() {
@@ -125,20 +146,30 @@ function drawStart() {
       x: cnv.width,
       y: Math.random() * 300 + 100,
       w: 50,
-      h: 100
+      h: 100,
+      speed: 0,
+      accel: -0.5
     };
     wall2 = {
       x: cnv.width + 500,
       y: Math.random() * 300 + 100,
       w: 50,
-      h: 100
+      h: 100,
+      speed: 0,
+      accel: -0.5
     };
     wall3 = {
       x: cnv.width + 1000,
       y: Math.random() * 300 + 100,
       w: 50,
-      h: 100
+      h: 100,
+      speed: 0,
+      accel: -0.5
     };
+    if (best < distance) {
+      best = distance;
+    }
+    distance = 0;
   }
 
   function drawWalls() {
@@ -162,8 +193,8 @@ function drawStart() {
     ctx.font = "30px Consolas";
     ctx.fillStyle = "black";
     ctx.fillText("HELICOPTER GAME", 25, 35);
-    ctx.fillText("DISTANCE: 0", 25, cnv.height - 15);
-    ctx.fillText("BEST: 0", cnv.width - 250, cnv.height - 15);
+    ctx.fillText(`DISTANCE: ${distance}`, 25, cnv.height - 15);
+    ctx.fillText(`BEST: ${best}`, cnv.width - 250, cnv.height - 15);
 
     // Helicopter
     ctx.drawImage(heliImg, heli.x, heli.y);
